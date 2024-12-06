@@ -1,0 +1,36 @@
+{
+  "name": "cookmaster",
+  "version": "1.0.0",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon --env-file=.env src/server.js",
+    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "1.7.8",
+    "bcryptjs": "2.4.3",
+    "camelize": "1.0.1",
+    "compression": "1.7.5",
+    "cors": "2.8.5",
+    "eslint": "6.8.0",
+    "eslint-config-trybe-backend": "1.0.1",
+    "express": "4.17.1",
+    "express-async-errors": "3.1.1",
+    "express-rate-limit": "7.4.1",
+    "express-slow-down": "2.0.3",
+    "helmet": "8.0.0",
+    "joi": "17.13.3",
+    "jsonwebtoken": "9.0.2",
+    "morgan": "1.10.0",
+    "mysql2": "3.11.3",
+    "swagger-ui-express": "5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.15"
+  }
+}

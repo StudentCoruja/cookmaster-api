@@ -1,0 +1,45 @@
+services:
+  node:
+    container_name: cookmaster_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    ports:
+      - 3001:3001
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_HOST: mysqldb
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE_NAME: cookmaster_db
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    networks:
+      - backend
+
+  mysqldb:
+    image: mysql:8.0.34
+    container_name: cookmaster_db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: cookmaster_db
+    restart: unless-stopped
+    healthcheck:
+      # Deve aguardar o banco ficar operacional
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./cookmaster_db.sql:/docker-entrypoint-initdb.d/cookmaster_db.sql
+    networks:
+      - backend
+
+networks:
+  backend:

@@ -1,0 +1,31 @@
+{
+  "env": {
+    "es2020": true
+  },
+  "extends": "trybe-backend",
+  "rules": {
+    "sonarjs/no-duplicate-string": [
+      "error",
+      6
+    ],
+    "indent": [
+      "error",
+      2
+    ],
+    "max-len": [
+      "error",
+      {
+        "code": 100,
+        "ignoreComments": true,
+        "ignoreUrls": true
+      }
+    ],
+    "max-lines-per-function": [
+      "error",
+      {
+        "skipBlankLines": true,
+        "max": 20
+      }
+    ]
+  }
+}

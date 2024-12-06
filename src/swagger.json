@@ -1,0 +1,298 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Cookmaster API",
+    "description": "Documentação da API Cookmaster para gerenciamento de receitas, categorias e usuários.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001",
+      "description": "Servidor Local"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": ["Login"],
+        "summary": "Login de usuário",
+        "description": "Autentica um usuário e retorna um token JWT.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "example": "alice@example.com" },
+                  "password": { "type": "string", "example": "123456Alice" }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login bem-sucedido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR..." }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campos inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "Invalid fields" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Listar todos os usuários",
+        "description": "Retorna uma lista de todos os usuários registrados.",
+        "responses": {
+          "200": {
+            "description": "Lista de usuários",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer", "example": 1 },
+                      "name": { "type": "string", "example": "Danilo Silva" },
+                      "email": { "type": "string", "example": "danilo.silva@example.com" },
+                      "role": { "type": "string", "example": "user" },
+                      "createdAt": { "type": "string", "example": "2021-06-01T00:00:00.000Z" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Users"],
+        "summary": "Criar um novo usuário",
+        "description": "Registra um novo usuário no sistema.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "example": "Danilo Silva" },
+                  "email": { "type": "string", "example": "danilo.silva@example.com" },
+                  "password": { "type": "string", "example": "123456Danilo" },
+                  "role": { "type": "string", "example": "user" },
+                  "createdAt": { "type": "string", "example": "2021-06-01T00:00:00.000Z" }
+                },
+                "required": ["name", "email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "example": 1 },
+                    "name": { "type": "string", "example": "Danilo Silva" },
+                    "email": { "type": "string", "example": "danilo.silva@example.com" },
+                    "role": { "type": "string", "example": "user" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "Validation Error" },
+                    "details": { "type": "array", "items": { "type": "string" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Buscar usuário por ID",
+        "description": "Retorna os dados de um usuário específico.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "example": 1 },
+                    "name": { "type": "string", "example": "Danilo Silva" },
+                    "email": { "type": "string", "example": "danilo.silva@example.com" },
+                    "role": { "type": "string", "example": "user" },
+                    "createdAt": { "type": "string", "example": "2021-06-01T00:00:00.000Z" }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "User with id 1 not found" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Listar todas as receitas",
+        "description": "Retorna uma lista de todas as receitas cadastradas.",
+        "responses": {
+          "200": {
+            "description": "Lista de receitas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer", "example": 1 },
+                      "title": { "type": "string", "example": "Bolo de Cenoura" },
+                      "ingredients": { "type": "string", "example": "cenoura, açúcar, farinha, ovos" },
+                      "preparation": { "type": "string", "example": "1. Misture os ingredientes..." },
+                      "userId": { "type": "integer", "example": 1 },
+                      "createdAt": { "type": "string", "example": "2021-06-01T00:00:00.000Z" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Recipes"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Criar uma nova receita",
+        "description": "Registra uma nova receita no sistema.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string", "example": "Bolo de Cenoura" },
+                  "ingredients": { "type": "string", "example": "cenoura, açúcar, farinha, ovos" },
+                  "preparation": { "type": "string", "example": "1. Misture os ingredientes..." },
+                  "userId": { "type": "integer", "example": 1 },
+                  "categoryIds": { "type": "array", "items": { "type": "integer" }, "example": [1, 2] }
+                },
+                "required": ["name", "ingredients", "preparation", "userId", "categoryIds"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Receita criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "example": 1 },
+                    "title": { "type": "string", "example": "Bolo de Cenoura" },
+                    "ingredients": { "type": "string", "example": "cenoura, açúcar, farinha, ovos" },
+                    "preparation": { "type": "string", "example": "1. Misture os ingredientes..." },
+                    "userId": { "type": "integer", "example": 1 },
+                    "categoryIds": { "type": "array", "items": { "type": "integer" }, "example": [1, 2] }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Usuário não autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "Token Not Found!" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS cookmaster_db;
 USE cookmaster_db;
 
 CREATE TABLE users (
@@ -52,7 +53,7 @@ INSERT INTO recipes (user_id, title, ingredients, preparation) VALUES
 (1, 'Brownie de Nozes', 'Chocolate, Manteiga, Farinha, Açúcar, Nozes, Ovos', 'Derreta o chocolate com a manteiga, adicione os ingredientes secos, depois os ovos e asse por 25 minutos'),
 (3, 'Lasanha Vegetariana', 'Massa de lasanha, Molho de tomate, Berinjela, Abobrinha, Queijo', 'Monte as camadas alternando entre molho, massa e legumes. Finalize com queijo e asse por 40 minutos');
 
-INSERT INTO recipe_categories (recipe_id, category_id) VALUES
+INSERT INTO recipes_categories (recipe_id, category_id) VALUES
 (1, 1), -- Bolo de Chocolate: Sobremesa
 (2, 2), -- Salada Vegana: Vegano
 (3, 1), -- Pizza de Frango com Catupiry: Pizzas

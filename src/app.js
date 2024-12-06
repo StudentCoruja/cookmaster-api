@@ -26,6 +26,9 @@ app.use(
 );
 app.use(helmet());
 
+app.set('trust proxy', 1);
+app.get('/ip', (request, response) => response.send(request.ip));
+
 app.use(express.json({ limit: '1mb' })); // Limita o corpo JSON a 1 MB
 app.use(express.urlencoded({ limit: '1mb', extended: true })); // Limita dados de formulários a 1 MB
 
